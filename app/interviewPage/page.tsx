@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "primereact/button";
 import { Divider } from "primereact/divider";
-import { getInterviewData } from "../api/functionalApis/route";
+import { getInterviewData } from "../services/functionalApis";
 import { InfoCard, PreviewCard, SessionCardsDisplay } from "../demoPage/page";
 
 

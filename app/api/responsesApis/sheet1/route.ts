@@ -1,6 +1,6 @@
 import { google } from "googleapis";
 import { NextResponse } from "next/server";
-import { calculateCandidateScores } from "../../functionalApis/route";
+import { calculateCandidateScores } from "../../../services/functionalApis";
 
 export async function GET() {
   try {

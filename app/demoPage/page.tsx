@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Card } from "primereact/card";
 import { Button } from "primereact/button";
 import { Divider } from "primereact/divider";
-import { GetDemoData } from "../api/functionalApis/route";
+import { GetDemoData } from "../services/functionalApis";
 import { ProgressBar } from "primereact/progressbar";
 import { Knob } from "primereact/knob";
 import { Dropdown } from "primereact/dropdown";

@@ -5,7 +5,7 @@ import { Card } from "primereact/card";
 import { RadioButton } from "primereact/radiobutton";
 import { Divider } from "primereact/divider";
 import { Button } from "primereact/button";
-import { getLatestCandidatesData } from "../api/functionalApis/route";
+import { getLatestCandidatesData } from "../services/functionalApis";
 import { Toast } from 'primereact/toast';
 import { Dialog } from 'primereact/dialog';
         
