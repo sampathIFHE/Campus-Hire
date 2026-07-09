@@ -1,4 +1,3 @@
-import { NextResponse } from "next/server";
 export async function GetDemoData () {
   const response = await fetch("/api/getApis");
   const result: Record<string, any> = await response.json();
@@ -15,7 +14,7 @@ export async function GetDemoData () {
   );
 
    const finalData = await dataFormating(data,demoInfo,"Demo Date","Demo Status")
-  return NextResponse.json(finalData);
+  return finalData
  
 };
 
