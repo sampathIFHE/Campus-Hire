@@ -24,12 +24,9 @@ export const getLatestCandidatesData = async () => {
   const finalData: Record<string, any>[] = result.data;
 
 
-  const temp = finalData.filter((item: any) => {
-    return (
-      // item["No of times called"] === "0" &&
-      item["Verification Status"] === ""
-    );
-  });
+  const temp = finalData.filter(
+  item => item["No of times called"] == "0" && item["Verification Status"] === ""
+);
 
   return temp;
 };

@@ -66,8 +66,8 @@ export async function GET() {
   }
 }
 
-export async function POST (req: Request){
- try {
+export async function POST(req: Request) {
+  try {
     const auth = new google.auth.GoogleAuth({
       credentials: {
         client_email: process.env.GOOGLE_CLIENT_EMAIL,
@@ -78,32 +78,47 @@ export async function POST (req: Request){
 
     const sheets = google.sheets({
       version: "v4",
-      auth: auth,
+      auth,
     });
 
- const body = await req.json();
- const values = [Object.values(body)];
- await sheets.spreadsheets.values.append({
-  spreadsheetId: process.env.GOOGLE_SHEET_ID,
-  range: "Sheet1",
-  valueInputOption: "USER_ENTERED",
-  requestBody: {
-    values,
-  },
-});
-        return NextResponse.json({
-            success: true,
-            data: values,
-        });
- }catch(error:any){
- return NextResponse.json({
-    message: error.message,
-    stack: error.stack,
-    full: error,
-  },
-   { status: 500 }
-);
- }
+    const body = await req.json();
+
+    // Get header row
+    const headerResponse = await sheets.spreadsheets.values.get({
+      spreadsheetId: process.env.GOOGLE_SHEET_ID,
+      range: "Sheet1!1:1",
+    });
+
+    const headers = headerResponse.data.values?.[0] || [];
+
+    // Arrange values according to header order
+    const values = [
+      headers.map((header: string) => body[header] ?? "")
+    ];
+
+    await sheets.spreadsheets.values.append({
+      spreadsheetId: process.env.GOOGLE_SHEET_ID,
+      range: "Sheet1",
+      valueInputOption: "USER_ENTERED",
+      requestBody: {
+        values,
+      },
+    });
+
+    return NextResponse.json({
+      success: true,
+      data: values,
+    });
+  } catch (error: any) {
+    return NextResponse.json(
+      {
+        message: error.message,
+        stack: error.stack,
+        full: error,
+      },
+      { status: 500 }
+    );
+  }
 }
 
 

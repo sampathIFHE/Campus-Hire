@@ -489,4 +489,5 @@ const DepartmentsData = [
     "FST Hyderabad",
     "IBS Bangalore",
     "IBS Hyderabad",
+    "FST Sociology"
 ]

@@ -55,49 +55,40 @@ const inputStyle = {
     color: "#374151",
   };
 
-  const handleSubmit = async (e:any) => {
-    e.preventDefault();
-   const json = headers.reduce((acc: any, field: string) => {
-    acc[field] = formData[field] || "";
-    return acc;
-}, {});
-    json["CV Count"] =  Number(candidatesData[candidatesData.length - 1]?.["CV Count"] || 0) + 1
-    json["No of times called"] =  0
-    json["S No"]=  Number(candidatesData[candidatesData.length - 1]?.["S No"] || 0) + 1
-
+  const handleSubmit = async (e: any) => {
+  e.preventDefault();
+  const json = {
+    ...formData,
+    "CV Count":
+      Number(candidatesData[candidatesData.length - 1]?.["CV Count"] || 0) + 1,
+    "No of times called": "0",
+  };
+  try {
     const response = await fetch("/api/getApis", {
-    method: "POST",
-    headers: {
+      method: "POST",
+      headers: {
         "Content-Type": "application/json",
-    },
-    body: JSON.stringify(json),
-});
-const result = await response.json();
-setFormData({});
-getData();
-setDuplicates([]);
-console.log(result);
-  };
-  const getData = async () => {
-    try {
-      const response = await fetch("/api/getApis");
-      const result = await response.json();
-      setHeaders(result[0]);
-      const rows = result[0];
-      result.shift()
-      const finalData = result.map((item: any) => {
-       let json = item.reduce((acc: any, val: any, ind: number) => {
-    acc[rows[ind]] = val;
-    return acc;
-    }, {});
-        return json;
-      });
-      console.log(finalData, "response");
-      setCandidatesData(finalData);
-    } catch (error: any) {
-      console.log("FULL ERROR:", error);
-    }
-  };
+      },
+      body: JSON.stringify(json),
+    });
+    const result = await response.json();
+    setFormData({});
+    setDuplicates([]);
+    getData();
+  } catch (error) {
+    console.error("Error saving candidate:", error);
+  }
+};
+const getData = async () => {
+  try {
+    const response = await fetch("/api/getApis");
+    const result = await response.json();
+    setHeaders(result.headers);
+    setCandidatesData(result.data);
+  } catch (error) {
+    console.log("FULL ERROR:", error);
+  }
+};
   const handleChanges = (field: string, value: any) => {
     if (field == "Name" || field == "Mail" || field == "Mobile")
       findDuplicate(field, value);
