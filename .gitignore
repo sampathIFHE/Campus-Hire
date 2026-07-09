@@ -41,7 +41,6 @@ yarn-error.log*
 next-env.d.ts
 
 *.zip
-*.json
 *.env
 .env.local
 sheet-manager-481108-ccb3ad142b3e.json
