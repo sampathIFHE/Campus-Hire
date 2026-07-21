@@ -317,3 +317,31 @@ const date = new Date(row.Timestamp).toLocaleDateString(
     })
   );
 };
+
+export const getCandidatesByDemoDate = async (demoDate: string)=>{
+    const response = await fetch("/api/getApis");
+  const result: Record<string, any> = await response.json();
+  const data: Record<string, any>[] = result.data;
+
+const newDate = new Date(demoDate);
+
+const formatteddate = new Intl.DateTimeFormat("en-GB", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+}).format(newDate);
+
+
+data.forEach((item) => {
+  if (item["Demo Date"]?.includes("May") || item["Demo Date"]?.includes("Jun")) {
+  }
+});
+
+   data.filter((item)=>item["Demo Date"] == formatteddate)
+   const passedCandidates = data.filter((item)=>item["Demo Date"] == formatteddate && (item["Demo Status"]?.toLowerCase() == "pass" || item["Demo Status"]?.toLowerCase() == "selected"));
+   const failedCandidates = data.filter((item)=>item["Demo Date"] == formatteddate && (item["Demo Status"]?.toLowerCase() == "fail" || item["Demo Status"]?.toLowerCase() == "not selected"));
+   return{
+    passedCandidates,
+    failedCandidates 
+   }
+}

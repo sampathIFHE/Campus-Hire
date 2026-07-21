@@ -4,13 +4,17 @@ import { useEffect, useState } from "react";
 import { Card } from "primereact/card";
 import { Button } from "primereact/button";
 import { Divider } from "primereact/divider";
-import { GetDemoData } from "../services/functionalApis";
+import { getCandidatesByDemoDate, GetDemoData } from "../services/functionalApis";
 import { ProgressBar } from "primereact/progressbar";
 import { Knob } from "primereact/knob";
 import { Dropdown } from "primereact/dropdown";
+import { useDemoStore } from "../store/demoStore";
+import { useRouter } from "next/navigation";
+
 
 const DemoPage = () => {
   const [demoData, setDemoData] = useState<any>();
+
 
   useEffect(() => {
     const load = async () => {
@@ -337,6 +341,24 @@ export const SessionCardsDisplay = ({
   latestArray,
 }: SessionCardsDisplay) => {
   const [dropdownSelection, setDropdownSelection] = useState<string>("Latest");
+   const setSummary = useDemoStore((state) => state.setSummary);
+  const router = useRouter();
+  const viewDemoClickHandler = async(item: DisplayCards) => {
+  const response = await getCandidatesByDemoDate(item.date)
+  console.log(response)
+  setSummary({
+    date: item.date,
+    totalAttended: item.totalAttended,
+    passedCount: item.passedCount,
+    failedCount: item.failedCount,
+    successRate: item.successRate,
+    passedCandidates: response.passedCandidates,
+    failedCandidates: response.failedCandidates,
+  });
+
+  router.push("/datewiseData");  
+
+  }
   const header = (
     <div
       style={{
@@ -490,6 +512,7 @@ export const SessionCardsDisplay = ({
                   icon="pi pi-arrow-right"
                   iconPos="right"
                   style={{ color: "#6D5DF6", padding: 0 }}
+                  onClick={() => viewDemoClickHandler(item)}
                 />
               </Card>
             );
