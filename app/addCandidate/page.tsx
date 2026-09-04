@@ -371,6 +371,7 @@ export default AddCandidatePage;
 const ReceivedOptions = [
   { name: "Careers", value: "Careers" },
   { name: "FST", value: "FST" },
+  { name: "Naukri", value: "Naukri" },
 ];
 
 
